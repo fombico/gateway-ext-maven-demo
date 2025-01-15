@@ -1,0 +1,40 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - uri: https://httpbingo.org
+          predicates:
+            - Path=/example/**
+          filters:
+            - StripPrefix=1
+        - uri: https://httpbingo.org
+          predicates:
+            - Path=/test/**
+          filters:
+            - SsoLogin
+            - StripPrefix=1
+            - AllowedRequestQueryParamsCount=1
+  security:
+    oauth2:
+      client:
+        registration:
+          sso:
+            provider: sso
+            client-id: test
+            client-secret: test
+            authorization-grant-type: authorization_code
+            scope: openid,profile,roles,user_attributes,cloud_controller.admin
+        provider:
+          sso:
+            issuer-uri: http://localhost:9000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  server:
+    port: 8090
+  endpoint:
+    gateway:
+      enabled: true

@@ -1,0 +1,53 @@
+tanzu:
+  local-authorization-server:
+    users:
+      - username: viewer_user
+        password: viewer_password
+        attributes:
+          email: viewer_user@example.com
+          roles:
+            - viewer
+      - username: test
+        password: test
+        attributes:
+          email: test@example.com
+          roles:
+            - viewer
+      - username: admin_user
+        password: admin_password
+        attributes:
+          email: admin_user@example.com
+          roles:
+            - admin
+      - username: ua_admin_user
+        password: ua_admin_password
+        attributes:
+          email: ua_admin_user@example.com
+          roles:
+            - admin
+      - username: cc_admin_user
+        password: cc_admin_password
+        attributes:
+          email: cc_admin_user@example.com
+          cloud_controller.admin: "true"
+    clients:
+      - client-id: test
+        client-secret: test
+        client-authentication-methods:
+          - client_secret_basic
+        authorization-grant-types:
+          - authorization_code
+          - client_credentials
+          - refresh_token
+        redirect-uris:
+          - http://localhost:8080
+        require-consent: "true"
+        scope:
+          - openid
+          - profile
+          - email
+          - roles
+          - user_attributes
+          - cloud_controller.admin
+
+logging.level.org.springframework: DEBUG
